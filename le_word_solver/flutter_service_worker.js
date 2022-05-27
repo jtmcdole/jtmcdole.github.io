@@ -6,20 +6,21 @@ const RESOURCES = {
   "assets/AssetManifest.json": "99914b932bd37a50b983c5e7c90ae93b",
 "assets/FontManifest.json": "7b2a36307916a9721811788013e65289",
 "assets/fonts/MaterialIcons-Regular.otf": "95db9098c58fd6db106f1116bae85a0b",
-"assets/NOTICES": "ec97f13352ca23697f80097bf205296c",
+"assets/NOTICES": "04256bddc1f95c8524e01676a5a0d9bf",
+"assets/shaders/ink_sparkle.frag": "6e4432fe9676b7cedc05d97a76d9113b",
 "canvaskit/canvaskit.js": "c2b4e5f3d7a3d82aed024e7249a78487",
 "canvaskit/canvaskit.wasm": "4b83d89d9fecbea8ca46f2f760c5a9ba",
 "canvaskit/profiling/canvaskit.js": "ae2949af4efc61d28a4a80fffa1db900",
 "canvaskit/profiling/canvaskit.wasm": "95e736ab31147d1b2c7b25f11d4c32cd",
 "favicon.png": "f330f76e033e8ae8fa00497556b3efd9",
-"flutter.js": "3688efe0a39e59781b4f95efbd6b5b62",
+"flutter.js": "eb2682e33f25cd8f1fc59011497c35f8",
 "icons/Icon-192.png": "cfe7b4c246de9aea7e58b238bc3a5afa",
 "icons/Icon-512.png": "cfe7b4c246de9aea7e58b238bc3a5afa",
 "icons/Icon-maskable-192.png": "cfe7b4c246de9aea7e58b238bc3a5afa",
 "icons/Icon-maskable-512.png": "cfe7b4c246de9aea7e58b238bc3a5afa",
-"index.html": "e56c495c2d1b3bee187d618ab3587fcf",
-"/": "e56c495c2d1b3bee187d618ab3587fcf",
-"main.dart.js": "8cd128330a2f3ed833b7f999b607c572",
+"index.html": "d3ca9cdfbc731357912df419fc11f083",
+"/": "d3ca9cdfbc731357912df419fc11f083",
+"main.dart.js": "f2fa5f594fb6ea70acbedf94cf9dbec1",
 "manifest.json": "ba8367b5d97267339d7515d4a9ce084f",
 "version.json": "cc9c02f599de2d53e53d59cc69ecdd50"
 };
@@ -29,7 +30,6 @@ const RESOURCES = {
 const CORE = [
   "main.dart.js",
 "index.html",
-"assets/NOTICES",
 "assets/AssetManifest.json",
 "assets/FontManifest.json"];
 // During install, the TEMP cache is populated with the application shell files.
@@ -128,9 +128,11 @@ self.addEventListener("fetch", (event) => {
     .then((cache) =>  {
       return cache.match(event.request).then((response) => {
         // Either respond with the cached resource, or perform a fetch and
-        // lazily populate the cache.
+        // lazily populate the cache only if the resource was successfully fetched.
         return response || fetch(event.request).then((response) => {
-          cache.put(event.request, response.clone());
+          if (response && Boolean(response.ok)) {
+            cache.put(event.request, response.clone());
+          }
           return response;
         });
       })
