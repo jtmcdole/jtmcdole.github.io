@@ -404,6 +404,11 @@ class CompiledApp {
       _1308: () => typeof dartUseDateNowForTicks !== "undefined",
       _1309: () => 1000 * performance.now(),
       _1310: () => Date.now(),
+      _1312: () => {
+        return typeof process != "undefined" &&
+               Object.prototype.toString.call(process) == "[object process]" &&
+               process.platform == "win32"
+      },
       _1313: () => new WeakMap(),
       _1314: (map, o) => map.get(o),
       _1315: (map, o, v) => map.set(o, v),
@@ -449,9 +454,12 @@ class CompiledApp {
       _1467: (ms, c) =>
       setTimeout(() => dartInstance.exports.$invokeCallback(c),ms),
       _1468: (handle) => clearTimeout(handle),
+      _1469: (ms, c) =>
+      setInterval(() => dartInstance.exports.$invokeCallback(c), ms),
       _1470: (handle) => clearInterval(handle),
       _1471: (c) =>
       queueMicrotask(() => dartInstance.exports.$invokeCallback(c)),
+      _1472: () => Date.now(),
       _1473: () => new Error().stack,
       _1474: (exn) => {
         let stackString = exn.toString();
