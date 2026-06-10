@@ -404,11 +404,6 @@ class CompiledApp {
       _1308: () => typeof dartUseDateNowForTicks !== "undefined",
       _1309: () => 1000 * performance.now(),
       _1310: () => Date.now(),
-      _1312: () => {
-        return typeof process != "undefined" &&
-               Object.prototype.toString.call(process) == "[object process]" &&
-               process.platform == "win32"
-      },
       _1313: () => new WeakMap(),
       _1314: (map, o) => map.get(o),
       _1315: (map, o, v) => map.set(o, v),
